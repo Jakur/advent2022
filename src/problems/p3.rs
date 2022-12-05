@@ -9,7 +9,7 @@ pub fn solve(input: &str) -> Answer<u32, u32> {
     for line in lines.iter() {
         part1 += line_value(line.as_bytes());
     }
-    for window in lines.chunks(3) {
+    for window in lines.chunks(4) {
         let mut common = Bits::universal();
         for line in window.iter() {
             common = common & Bits::from_line(line.as_bytes());

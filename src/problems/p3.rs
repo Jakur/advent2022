@@ -1,5 +1,3 @@
-use std::ops::BitAnd;
-
 use super::*;
 
 pub fn solve(input: &str) -> Answer<u32, u32> {
@@ -10,53 +8,19 @@ pub fn solve(input: &str) -> Answer<u32, u32> {
         part1 += line_value(line.as_bytes());
     }
     for window in lines.chunks(4) {
-        let mut common = Bits::universal();
+        let mut common = CharSet::universal();
         for line in window.iter() {
-            common = common & Bits::from_line(line.as_bytes());
+            common = common & CharSet::from_line(line.as_bytes());
         }
         part2 += priority(common.find_single());
     }
     Answer::new(part1, part2)
 }
 
-#[derive(Debug, Default, Clone, Copy)]
-struct Bits {
-    data: u64,
-}
-
-impl Bits {
-    fn universal() -> Self {
-        Self { data: u64::MAX }
-    }
-    fn from_line(cs: &[u8]) -> Self {
-        let mut out = Self { data: 0 };
-        for c in cs.iter().copied() {
-            out.add_val(c);
-        }
-        out
-    }
-    fn add_val(&mut self, c: u8) {
-        self.data |= 1 << (c - b'A');
-    }
-    fn find_single(&self) -> u8 {
-        b'A' + self.data.trailing_zeros() as u8
-    }
-}
-
-impl BitAnd for Bits {
-    type Output = Bits;
-
-    fn bitand(self, rhs: Self) -> Self::Output {
-        Bits {
-            data: self.data & rhs.data,
-        }
-    }
-}
-
 fn line_value(line: &[u8]) -> u32 {
     let (left, right) = line.split_at(line.len() / 2);
-    let left_bits = Bits::from_line(left);
-    let right_bits = Bits::from_line(right);
+    let left_bits = CharSet::from_line(left);
+    let right_bits = CharSet::from_line(right);
     let common = (left_bits & right_bits).find_single();
     priority(common)
 }
@@ -75,8 +39,8 @@ mod test {
     use super::*;
     #[test]
     fn test() {
-        let mut a = Bits::default();
-        let mut b = Bits::default();
+        let mut a = CharSet::default();
+        let mut b = CharSet::default();
         a.add_val(b'C');
         a.add_val(b'a');
         b.add_val(b'C');

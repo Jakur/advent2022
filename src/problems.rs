@@ -56,3 +56,4 @@ pub mod p3;
 pub mod p4;
 pub mod p5;
 pub mod p6;
+pub mod p7;

@@ -13,6 +13,16 @@ impl<T: Display, U: Display> Answer<T, U> {
     }
 }
 
+impl<T: Display, U: Display> std::fmt::Display for Answer<T, U> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(
+            f,
+            "Answer: \nPart1: \n{}\n\nPart2: \n{}",
+            self.part1, self.part2
+        )
+    }
+}
+
 #[derive(Debug, Default, Clone, Copy)]
 struct CharSet {
     data: u64,
@@ -51,6 +61,7 @@ impl BitAnd for CharSet {
 }
 
 pub mod p1;
+pub mod p10;
 pub mod p2;
 pub mod p3;
 pub mod p4;

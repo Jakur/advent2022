@@ -98,8 +98,6 @@ pub fn solve(input: &str) -> Answer<u64, u64> {
                     .take(2)
                     .collect_tuple()
                     .unwrap();
-                dbg!(num);
-                dbg!(symbol);
                 if num == "old" {
                     monkey.op = Operation::Square;
                 } else {
